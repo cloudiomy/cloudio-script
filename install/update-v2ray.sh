@@ -2,52 +2,77 @@
 # V2ray Auto Setup 
 # Script     : r4r3
 # Author     : rizqi_pro,kedai_rare ✵✫ 𝑆𝐼𝑁𝐶𝐸 2021 ✫✵
-# =========================
+# ========================
 #EDITMYIP
-MYIP3=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
+VPSIP=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
 echo "Checking VPS"
-useripgit=$(cat /home/userip-git)
-usergit=$(cat /home/user-git) 
-
-# check expired script
+#useripgit=$(cat /home/userip-git)
+#usergit=$(cat /home/user-git)
+dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+today=`date +"%Y-%m-%d" -d -1day"$dateFromServer"`
+Exp1=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | grep $VPSIP | awk '{print $3}')
+# check expired script 
 CEKEXPIRED () {
-    today=$(date -d -1day +%Y-%m-%d)
-    Exp1=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | grep $MYIP3 | awk '{print $3}')
-    if [[ $today < $Exp1 ]]; then
-    echo -e "[ OK ] STATUS SCRIPT ACTIVE..."
-    else
+    d1=(`date -d "$Exp1" +%s`)
+    d2=(`date -d "$today" +%s`)
+    exp2=$(( (d1 - d2) / 86400 ))    
+    if [[ "$exp2" -le "0" ]]; then # -le less or equal
     clear
-    echo -e "[ ERROR ] Your license expired!"
-    echo -e "[ Info ] Please contact admin for IP Renewal - Contact Telegram @cloudio_admin"
+    echo -e "[ ERROR ] SCRIPT ANDA EXPIRED!"
+    echo -e "[ Info ] Sila contact admin untuk renew IP !! CONTACT SAYA @cloudio_admin DI TELEGRAM"
     exit 0
-fi
+    else
+    echo -e "[ OK ] STATUS SCRIPT AKTIF...."
+    fi
+
+}
+
+# check Lifetime script
+CEKLifetime () {
+    if [[ "${Exp1}" == "Lifetime" ]]; then
+    echo -e "[ OK ] STATUS SCRIPT Lifetime...."
+    else
+    echo -e "[ OK ] CEK STATUS SCRIPT EXPIRED ...."
+    CEKEXPIRED 
+    fi
+
 }
 
 # check izin
-IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $MYIP3)
-if [[ "${MYIP3}" == "${IZIN}" ]]; then
+CEKIZIN () {
+    IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $VPSIP)
+    if [[ "${VPSIP}" == "${IZIN}" ]]; then
 	clear
     echo -e "[ OK ] Access authorized"
-    CEKEXPIRED
-else
-	clear
+    CEKLifetime
+    else
+    clear
     echo -e "[ ERROR ] Access is denied"
-    echo -e "[ Info ] Please contact admin to purchase Script License - Contact Telegram @cloudio_admin"
+    echo -e "[ Info ] Please Contact Admin  # NAK DAFTAR IP ? CONTACT SAYA @cloudio_admin DI TELEGRAM"
     exit 0
-fi
+    fi
 
+}
+####################################################################
+
+CEKIZIN
 
 clear
-# colour info
-green="\033[32m" && red="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && NC="\e[0m"
-info="[ ${green}INFORMATION${NC} ]"
-ok="[ ${green}OK${NC} ]"
-Error="${red}[error]${NC}"
-Tip="${green}[note]${NC}"
+c5=$(cat /root/theme/menucolour5)
+c6=$(cat /root/theme/menucolour6)
+c7=$(cat /root/theme/menucolour7)
 
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\E[0;100;33m     • UPDATE V2RAY CORE •         \E[0m"
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+# colour info
+green="\033[32m" && red="\033[31m" && GR_BACK="\033[42;37m" && RED_BACK="\033[41;37m" && NC="\e[0m"
+info="[ ${GR}INFORMATION${NC} ]"
+ok="[ ${GR}OK${NC} ]"
+Error="${red}[error]${NC}"
+Tip="${GR}[note]${NC}"
+
+# menu
+mline2colour
+menucolour4 "${c7}          • UPDATE V2RAY CORE •            \e[0m"
+mline2colour
 # CHECK VERSION
 newversion=$(cat /home/v2ray-ver)
 oldversion=$(cat /etc/rare/v2ray/version)
@@ -55,7 +80,6 @@ if [[ "${newversion}" == "${oldversion}" ]]; then
 	echo -e ""
     echo "YOUR VERSION IS LATEST VERSION ${newversion}"
     echo -e ""
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 else
 	echo -e ""
     echo "YOUR VERSION IS ${oldversion}"
@@ -130,16 +154,16 @@ if [[ $tls_v2ray_status == "running" ]]; then
 fi
 echo -e $info V2ray Status $status_tls_v2ray
 echo -e ""
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+mline2colour
 echo ""
 read -n 1 -s -r -p "Press any key to back on menu"
 v2ray-menu 
 elif [[ "$num" = "n" ]]; then
 echo -e ""
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+mline2colour
 exit 0
 else
 echo -e ""
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+mline2colour
 exit 0
 fi

@@ -3,10 +3,10 @@
 # grep -c "^#PH56" /etc/sysctl.conf = 1 STATUS ON
 #####################################################################
 #EDITMYIP
-MYIP3=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
+VPSIP=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
 dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 today=`date +"%Y-%m-%d" -d -1day"$dateFromServer"`
-Exp1=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | grep $MYIP3 | awk '{print $3}')
+Exp1=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | grep $VPSIP | awk '{print $3}')
 # check expired script 
 CEKEXPIRED () {
     d1=(`date -d "$Exp1" +%s`)
@@ -14,11 +14,11 @@ CEKEXPIRED () {
     exp2=$(( (d1 - d2) / 86400 ))    
     if [[ "$exp2" -le "0" ]]; then # -le less or equal
     clear
-    echo -e "[ ERROR ] Your license expired!"
-    echo -e "[ Info ] Please contact admin for IP Renewal - Contact Telegram @cloudio_admin"
+    echo -e "[ ERROR ] SCRIPT ANDA EXPIRED!"
+    echo -e "[ Info ] Sila contact admin untuk renew IP !! CONTACT SAYA @cloudio_admin DI TELEGRAM"
     exit 0
     else
-    echo -e "[ OK ] STATUS SCRIPT ACTIVE..."
+    echo -e "[ OK ] STATUS SCRIPT AKTIF...."
     fi
 
 }
@@ -26,9 +26,9 @@ CEKEXPIRED () {
 # check Lifetime script
 CEKLifetime () {
     if [[ "${Exp1}" == "Lifetime" ]]; then
-    echo -e "[ OK ] STATUS SCRIPT LIFETIME..."
+    echo -e "[ OK ] STATUS SCRIPT Lifetime...."
     else
-    echo -e "[ OK ] CHECK STATUS SCRIPT EXPIRED..."
+    echo -e "[ OK ] CEK STATUS SCRIPT EXPIRED ...."
     CEKEXPIRED 
     fi
 
@@ -36,35 +36,39 @@ CEKLifetime () {
 
 # check izin
 CEKIZIN () {
-    IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $MYIP3)
-    if [[ "${MYIP3}" == "${IZIN}" ]]; then
+    IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $VPSIP)
+    if [[ "${VPSIP}" == "${IZIN}" ]]; then
 	clear
     echo -e "[ OK ] Access authorized"
     CEKLifetime
     else
     clear
     echo -e "[ ERROR ] Access is denied"
-    echo -e "[ Info ] Please contact admin to purchase Script License - Contact Telegram @cloudio_admin"
+    echo -e "[ Info ] Please Contact Admin  # NAK DAFTAR IP ? CONTACT SAYA @cloudio_admin DI TELEGRAM"
     exit 0
     fi
 
 }
-####################################################################
 
 CEKIZIN
+####################################################################
+
 
 clear
 
+c5=$(cat /root/theme/menucolour5)
+c6=$(cat /root/theme/menucolour6)
+c7=$(cat /root/theme/menucolour7)
 # Warna status
-green="\033[32m" && red="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && NC="\033[0m"
-Info="${green}[information]${NC}"
+GR="\033[32m" && red="\033[31m" && GR_BACK="\033[42;37m" && RED_BACK="\033[41;37m" && NC="\033[0m"
+Info="${GR}[information]${NC}"
 Error="${red}[error]${NC}"
-Tip="${green}[note]${NC}"
+Tip="${GR}[note]${NC}"
 
 # status tweek
 tcp_status(){
 	if [[ `grep -c "^#PH56" /etc/sysctl.conf` -eq 1 ]]; then
-		echo -e "TCP Tweek Current status : ${green}Installed${NC}"
+		echo -e "TCP Tweek Current status : ${GR}Installed${NC}"
 	    else
 		echo -e "TCP Tweek Current status : ${red}Not Installed${NC}"
 	fi
@@ -73,7 +77,7 @@ tcp_status(){
 # status tweek
 tcp_2_status(){
 	if [[ `grep -c "^#GRPC" /etc/sysctl.conf` -eq 1 ]]; then
-		echo -e "TCP Tweek 2 Current status : ${green}Installed${NC}"
+		echo -e "TCP Tweek 2 Current status : ${GR}Installed${NC}"
 	    else
 		echo -e "TCP Tweek 2 Current status : ${red}Not Installed${NC}"
 	fi
@@ -83,7 +87,7 @@ tcp_2_status(){
 bbr_status() {
     local param=$(sysctl net.ipv4.tcp_congestion_control | awk '{print $3}')
     if [[ x"${param}" == x"bbr" ]]; then
-        echo -e "BBR Current status : ${green}Installed${NC}"
+        echo -e "BBR Current status : ${GR}Installed${NC}"
     else
         echo -e "BBR Current status : ${red}Not Installed${NC}"
     fi
@@ -91,9 +95,9 @@ bbr_status() {
 
 delete_bbr() {
    clear
-   echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-   echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-   echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+   mline2colour
+   menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+   mline2colour
    echo       
    read -p "Do you want to remove BBR settings? [y/n]: " -e answer0
    if [[ "$answer0" = 'y' ]]; then
@@ -176,9 +180,9 @@ install_bbr2() {
 
 install_bbr() {
 	clear
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    mline2colour
+    menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+    mline2colour
     echo
 	echo "Ini adalah skrip percubaan. Gunakan atas risiko anda sendiri!"
 	echo "Skrip ini akan menukar beberapa network settings"
@@ -196,9 +200,9 @@ install_bbr() {
 
 delete_Tweaker() {
 	clear
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    mline2colour
+    menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+    mline2colour
     echo
 	read -p "Do you want to remove TCP Tweaker settings? [y/n]: " -e answer0
 	if [[ "$answer0" = 'y' ]]; then
@@ -225,9 +229,9 @@ sysctl -p /etc/sysctl.conf > /dev/null
 
 install_Tweaker() {
 	clear
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    mline2colour
+    menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+    mline2colour
     echo
 	echo "Ini adalah skrip percubaan. Gunakan atas risiko anda sendiri!"
 	echo "Skrip ini akan menukar beberapa network settings"
@@ -261,9 +265,9 @@ sysctl -p /etc/sysctl.conf > /dev/null
 
 delete_Tweaker_2() {
 	clear
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    mline2colour
+    menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+    mline2colour
     echo
 	read -p "Do you want to remove TCP Tweaker settings? [y/n]: " -e answer0
 	if [[ "$answer0" = 'y' ]]; then
@@ -296,9 +300,9 @@ sysctl -p /etc/sysctl.conf > /dev/null
 
 install_Tweaker_2() {
 	clear
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-    echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    mline2colour
+    menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+    mline2colour
     echo
 	echo "Ini adalah skrip percubaan. Gunakan atas risiko anda sendiri!"
 	echo "Skrip ini akan menukar beberapa network settings"
@@ -337,20 +341,19 @@ sysctl -p /etc/sysctl.conf > /dev/null
 }    
 
 # menu tweaker
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\E[0;100;33m    • MAGIC BBR & TCP Tweaker •    \E[0m"
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+mline2colour
+menucolour4 "${c7}       • MAGIC BBR & TCP Tweaker •         \e[0m"
+mline2colour
 tcp_status
 bbr_status
-echo
-echo -e " [\e[36m•1\e[0m] Install BBR "
-echo -e " [\e[36m•2\e[0m] Install TCP Tweaker "
-echo -e " [\e[36m•3\e[0m] Delete BBR "
-echo -e " [\e[36m•4\e[0m] Delete TCP Tweaker"
-echo -e ""
-echo -e " [\e[31m•0\e[0m] \e[31mBACK TO MENU\033[0m"
-echo -e   ""
-echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+menucolour4 "
+ ${c6}[${c5}•1${c6}] Install BBR
+ ${c6}[${c5}•2${c6}] Install TCP Tweaker
+ ${c6}[${c5}•3${c6}] Delete BBR
+ ${c6}[${c5}•4${c6}] Delete TCP Tweaker
+
+ ${c6}[${c5}•0${c6}] \e[31mBACK TO MENU\033[0m"
+mline2colour
 echo -e "Type x atau [ Ctrl+C ] •Keluar-dari-Script"
 echo -e ""
 read -p "► Select menu :  "  opt

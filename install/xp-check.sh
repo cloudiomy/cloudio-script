@@ -4,25 +4,29 @@
 # Author     : rizqi_pro,kedai_rare ✵✫ 𝑆𝐼𝑁𝐶𝐸 2021 ✫✵
 # =========================
 #EDITMYIP
-MYIP3=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
+VPSIP=$(grep -o '"query":"[^"]*' /usr/sbin/infovps | grep -o '[^"]*$')
 # check izin
 CEKIZIN () {
-    IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $MYIP3)
-    if [[ "${MYIP3}" == "${IZIN}" ]]; then
+    IZIN=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | awk '{print $4}' | grep $VPSIP)
+    if [[ "${VPSIP}" == "${IZIN}" ]]; then
 	clear
     echo -e "[ OK ] Access authorized"
     else
     clear
     echo -e "[ ERROR ] Access is denied"
-    echo -e "[ Info ] Please contact admin to purchase Script License - Contact Telegram @cloudio_admin"
+    echo -e "[ Info ] Please Contact Admin  # NAK DAFTAR IP ? CONTACT SAYA @cloudio_admin DI TELEGRAM"
     exit 0
     fi
 
 }
 
 CEKIZIN
-####################################################################
 
+####################################################################
+echo "" >>/root/xpired_check.log
+echo "-------------------------------------" >>/root/xpired_check.log
+echo "xpired check mula `date`" >>/root/xpired_check.log
+echo "-------------------------------------" >>/root/xpired_check.log
 
 # delete expired user ovpn
 echo -e "[ Info ] Check expired delete"
@@ -57,3 +61,4 @@ sleep 2
 echo -e "[ OK ] Check V2ray Core update"
 curl --silent https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | head -1  > /home/v2ray-ver && &>/dev/null
 sleep 2
+echo "Selesai" >>/root/xpired_check.log
