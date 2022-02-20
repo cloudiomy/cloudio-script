@@ -5,7 +5,7 @@
    - Stunnel4                : 444, 777
    - Dropbear                : 109, 143
    - Squid Proxy             : 3128, 8000 (limit to IP Server)
-   - Badvpn                  : 7300
+   - Badvpn                  : 7100 - 7300
    - Nginx                   : 81, 82
    - Wireguard               : 7070
    - Shadowsocks-R           : 1443-1543
@@ -16,13 +16,15 @@
    - XRAY VLESS WS TLS       : 443
    - XRAY TROJAN TLS         : 443
    - XRAY VMESS TLS          : 443
-   - XRAY VLESS WS NONE      : 80
-   - XRAY VMESS WS NONE      : 88
+   - XRAY VLESS GRPC         : 80
+   - XRAY VLESS WS NONE      : 88
+   - XRAY VMESS WS NONE      : 888
    - V2RAY VLESS TLS SPLICE  : 8443
    - V2RAY VLESS TLS DIRECT  : 8443
    - V2RAY VLESS WS TLS      : 8443
    - V2RAY TROJAN TLS        : 8443
    - V2RAY VMESS TLS         : 8443
+   - V2RAY VLESS GRPC        : 880
    - V2RAY VLESS WS NONE     : 8080
    - V2RAY VMESS WS NONE     : 8888
    - Trojan-GFW              : 2087
