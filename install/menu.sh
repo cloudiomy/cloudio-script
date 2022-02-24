@@ -43,7 +43,7 @@ CEKEXPIRED () {
 CEKLifetime () {
     if [[ "${Exp1}" == "Lifetime" ]]; then
     Exp="Lifetime"
-    diff2="Selamanya"
+    diff2="🔥"
     else
     CEKEXPIRED 
     fi
@@ -154,7 +154,7 @@ totalssh=$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l
 totlUSR=$(($totalxray + $totalv2ray + $totalssh))
 
 # script version check
-SCnewversion=$(curl -s https://raw.githubusercontent.com/shopeevpn/v3/main/1versi)
+SCnewversion=$(curl -s https://raw.githubusercontent.com/cloudiomy/v3/main/1versi)
 SColdversion=$(cat /home/version)
 if [[ "${SCnewversion}" == "${SColdversion}" ]]; then
     oldver=""
@@ -162,7 +162,7 @@ if [[ "${SCnewversion}" == "${SColdversion}" ]]; then
     SCnewver="${SCnewversion}"
     SCnewver1=" echo -e [ Info ] \e[5mVersi Script Terbaru ${SCnewver} \e[0m"
 fi
-Name=$(curl -sS https://raw.githubusercontent.com/shopeevpn/access-ip/main/access-ip | grep $VPSIP | awk '{print $2}')
+Name=$(curl -sS https://raw.githubusercontent.com/cloudiomy/access-ip/main/access-ip | grep $VPSIP | awk '{print $2}')
 
 # dns check
 curl -s http://ip-api.com/json/ > /usr/sbin/infodns
@@ -204,19 +204,18 @@ cline=$(cat /root/theme/mlinecolour)
 clear
 #echo -e "${cbann}${banner1}"
 colourbanner "$banname"
-colourbanner2 "$ban2name"
 mlinecolour
-menucolour1 "CPU Model               \e[0m:   $cname"
-menucolour1 "Operating System        \e[0m:    "`hostnamectl | grep "Operating System" | cut -d ' ' -f5-`
-menucolour1 "System Uptime           \e[0m:    $uptime "
-menucolour1 "ISP Name                \e[0m:    $ISP"
-menucolour1 "Domain                  \e[0m:    $domain"	
-menucolour1 "IPv4                    \e[0m:    $VPSIP"	
-menucolour1 "City                    \e[0m:    $CITY"
-menucolour1 "Time                    \e[0m:    $time $WKT"
-menucolour1 "Date                    \e[0m:    $DAY $DATE"
-menucolour1 "Script Version          \e[0m:    $SColdversion"
-menucolour1 "Domain Cert status      \e[0m:    \033[0;36mExpired in ${tlsStatus} days($tlsexpdate)\e[0m"
+menucolour1 "CPU Model              \e[0m:   $cname"
+menucolour1 "Operating System       \e[0m:    "`hostnamectl | grep "Operating System" | cut -d ' ' -f5-`
+menucolour1 "System Uptime          \e[0m:    $uptime "
+menucolour1 "ISP Name               \e[0m:    $ISP"
+menucolour1 "Domain                 \e[0m:    $domain"	
+menucolour1 "IPv4                   \e[0m:    $VPSIP"	
+menucolour1 "City                   \e[0m:    $CITY"
+menucolour1 "Time                   \e[0m:    $time $WKT"
+menucolour1 "Date                   \e[0m:    $DAY $DATE"
+menucolour1 "Script Version         \e[0m:    V3 (22.02.2022)"
+menucolour1 "Domain Cert status     \e[0m:    \033[0;36mExpired in ${tlsStatus} days($tlsexpdate)\e[0m"
 mlinecolour
 $dnsinfo1
 $dnsinfo2
@@ -240,16 +239,16 @@ menucolour4 "                       ⚡️ MENU VPS ⚡️
   ${c6}[${c5}•1${c6}]  •  SSH & OpenVPN Menu     ${c6}[${c5}•9${c6}]  •  VPS Information
   ${c6}[${c5}•2${c6}]  •  Wireguard Menu         ${c6}[${c5}10${c6}]  •  Script Info
   ${c6}[${c5}•3${c6}]  •  SSR & SS Menu          ${c6}[${c5}11${c6}]  •  Traffic Info
-  ${c6}[${c5}•4${c6}]  •  XRAY Menu              ${c6}[${c5}12${c6}]  •  User Created Info
+  ${c6}[${c5}•4${c6}]  •  XRAY Menu              ${c6}[${c5}12${c6}]  •  User Created History
   ${c6}[${c5}•5${c6}]  •  V2RAY Menu             ${c6}[${c5}13${c6}]  •  Clear RAM Cache
-  ${c6}[${c5}•6${c6}]  •  Trojan GFW Menu        ${c6}[${c5}14${c6}]  •  BBR & TCP Tweaak
-  ${c6}[${c5}•7${c6}]  •  SYSTEM Menu            ${c6}[${c5}15${c6}]  •  Menu Themes
+  ${c6}[${c5}•6${c6}]  •  Trojan GFW Menu        ${c6}[${c5}14${c6}]  •  BBR & TCP Tweak
+  ${c6}[${c5}•7${c6}]  •  System Menu            ${c6}[${c5}15${c6}]  •  Menu Themes
   ${c6}[${c5}•8${c6}]  •  Status Service"
 mlinecolour
-${SCnewver1}
 ${accesd}
 menucolour4 "Client Name    \E[0m: $Name"
-menucolour4 "Script Expired \E[0m: $Exp $diff2"
+menucolour4 "License Expiry \E[0m: $Exp $diff2"
+menucolour4 "Version        \E[0m: V3 (22.02.2022)"
 mlinecolour
 echo -e "Type x atau [ Ctrl+C ] •Keluar-dari-Script"
 echo
